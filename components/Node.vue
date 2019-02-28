@@ -214,13 +214,13 @@ export default {
 }
 .name {
   flex: 1;
-  color: rgb(63, 153, 247);
+  color: rgb(59, 186, 222);
   font-weight: bold;
   margin-bottom: 6px;
 }
 .version {
   font-size: 12px;
-  font-family: 'Roboto Mono', 'Courier New', Courier, monospace
+  font-family: 'Roboto Mono', 'Operator Mono', 'SF Mono', 'Menlo', 'Courier', Courier, monospace
 }
 .techie, .techie-details {
   background: rgba(196, 148, 148, 0.08);
@@ -228,7 +228,7 @@ export default {
   padding: 8px 20px;
   color: rgba(183, 184, 186, 1);
   font-size: 12px;
-  font-family: 'Roboto Mono', 'Courier New', Courier, monospace
+  font-family: 'Roboto Mono', 'Operator Mono', 'SF Mono', 'Menlo', 'Courier', Courier, monospace
 }
 .techie-details {
   flex-direction: column;

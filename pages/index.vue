@@ -46,10 +46,10 @@ export default {
     Node
   },
   async mounted () {
-    // const result = await this.$axios.$get('//node.f1ex.io/nodes-status.json?id=' + (Date.now() + Math.random()), {
-    //   withCredentials: true
-    // })
-    const result = require('~/static/mocking.json')
+    const result = await this.$axios.$get('//node.f1ex.io/nodes-status.json?id=' + (Date.now() + Math.random()), {
+      withCredentials: true
+    })
+    // const result = require('~/static/mocking.json')
     this.nodes = result.nodes
     console.log(result)
     this.updatedAt = new Date(result.updatedAt).toLocaleString()
