@@ -1,40 +1,60 @@
 <template>
   <div class="node" :class="isActive ? 'active' : ''">
-    <div class="node-info">
-      <div class="name">{{data.name}}</div>
-      <div class="text">{{data.text}}</div>
-      <div class="addr">{{data.host}}</div>
-    </div>
-    <div class="node-stat">
-      <div class="stat-spot" :class="isActive ? 'active' : ''" v-tooltip="{ content: Tooltips }">
-        <div class="stat-base"></div>
-        <div class="stat-icon"></div>
-        <div class="stat-hlight-base"></div>
-        <div class="stat-hlight">
-          <svg width="22px" height="13px" viewBox="0 0 22 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <defs>
-                  <linearGradient x1="49.9999882%" y1="-13.7086219%" x2="50%" y2="100%" id="linearGradient-1">
-                      <stop stop-color="#A2EFFF" stop-opacity="0.234346694" offset="0%"></stop>
-                      <stop stop-color="#A8E9FF" stop-opacity="0.0197860054" offset="100%"></stop>
-                  </linearGradient>
-                  <radialGradient cx="50%" cy="96.988131%" fx="50%" fy="96.988131%" r="102.880891%" gradientTransform="translate(0.500000,0.969881),scale(0.564583,1.000000),rotate(90.000000),translate(-0.500000,-0.969881)" id="radialGradient-2">
-                      <stop stop-color="#B4F0FF" stop-opacity="0" offset="0%"></stop>
-                      <stop stop-color="#B4F0FF" stop-opacity="0" offset="90.8620845%"></stop>
-                      <stop stop-color="#75C9FF" stop-opacity="0.440274004" offset="100%"></stop>
-                  </radialGradient>
-                  <path d="M4617.01249,456.528949 C4617.0042,456.353675 4617,456.177328 4617,456 C4617,449.924868 4621.92487,445 4628,445 C4634.07513,445 4639,449.924868 4639,456 C4639,456.177328 4638.9958,456.353675 4638.98751,456.528949 C4635.6539,457.101009 4631.92952,457.420833 4628,457.420833 C4624.07048,457.420833 4620.3461,457.101009 4617.01249,456.528949 Z" id="path-3"></path>
-              </defs>
-              <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                  <g id="Artboard" transform="translate(-4617.000000, -445.000000)">
-                      <g id="light">
-                          <use fill="url(#linearGradient-1)" xlink:href="#path-3"></use>
-                          <use fill="url(#radialGradient-2)" xlink:href="#path-3"></use>
-                      </g>
-                  </g>
-              </g>
-          </svg>
+    <div class="node-top">
+      <div class="node-info">
+        <div class="node-info-top">
+          <div class="name">{{data.name}}</div>
+          <a class="version" :href="'//github.com/MixinNetwork/mixin/commit/' + Version">{{Version.slice(0, 8)}}</a>
+        </div>
+        <div class="text">{{data.text}}</div>
+      </div>
+      <div class="node-stat">
+        <div class="stat-spot" :class="isActive ? 'active' : ''" v-tooltip="{ content: Tooltips }">
+          <div class="stat-base"></div>
+          <div class="stat-icon"></div>
+          <div class="stat-hlight-base"></div>
+          <div class="stat-hlight">
+            <svg width="16px" height="10px" viewBox="0 0 16 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                    <linearGradient x1="49.9999882%" y1="-13.7086219%" x2="50%" y2="100%" id="linearGradient-1">
+                        <stop stop-color="#A2EFFF" stop-opacity="0.234346694" offset="0%"></stop>
+                        <stop stop-color="#A8E9FF" stop-opacity="0.0197860054" offset="100%"></stop>
+                    </linearGradient>
+                    <radialGradient cx="50%" cy="96.988131%" fx="50%" fy="96.988131%" r="102.880891%" gradientTransform="translate(0.500000,0.969881),scale(0.564583,1.000000),rotate(90.000000),translate(-0.500000,-0.969881)" id="radialGradient-2">
+                        <stop stop-color="#B4F0FF" stop-opacity="0" offset="0%"></stop>
+                        <stop stop-color="#B4F0FF" stop-opacity="0" offset="90.8620845%"></stop>
+                        <stop stop-color="#75C9FF" stop-opacity="0.440274004" offset="100%"></stop>
+                    </radialGradient>
+                    <path d="M4617.01249,456.528949 C4617.0042,456.353675 4617,456.177328 4617,456 C4617,449.924868 4621.92487,445 4628,445 C4634.07513,445 4639,449.924868 4639,456 C4639,456.177328 4638.9958,456.353675 4638.98751,456.528949 C4635.6539,457.101009 4631.92952,457.420833 4628,457.420833 C4624.07048,457.420833 4620.3461,457.101009 4617.01249,456.528949 Z" id="path-3"></path>
+                </defs>
+                <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Artboard" transform="translate(-4617.000000, -445.000000)">
+                        <g id="light">
+                            <use fill="url(#linearGradient-1)" xlink:href="#path-3"></use>
+                            <use fill="url(#radialGradient-2)" xlink:href="#path-3"></use>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+          </div>
         </div>
       </div>
+    </div>
+
+    <div class="techie-details"  :class="toggleTechieDetails? 'open': ''">
+      <div class="row">
+        <div class="label">Cached:</div>
+        <div class="value">{{CachedItems}}</div>
+      </div>
+      <div class="row">
+        <div class="label">Topology:</div>
+        <div class="value">{{data.rpc_result.data.graph.topology}}</div>
+      </div>
+    </div>
+
+    <div class="techie" @click="toggle">
+      <div class="addr">{{data.host}}</div>
+      <!-- <div class="topology">Topology: {{data.rpc_result.data.graph.topology}}</div> -->
     </div>
   </div>
 </template>
@@ -49,6 +69,11 @@ export default {
       rpc_result: {},
     }
   },
+  data () {
+    return {
+      toggleTechieDetails: false
+    }
+  },
   computed: {
     isActive() {
       if (this.data.rpc_result && this.data.rpc_result.code === 0) {
@@ -61,6 +86,27 @@ export default {
         return 'Working'
       }
       return this.data.rpc_result.data
+    },
+    Version() {
+      if (this.data.rpc_result && this.data.rpc_result.code === 0) {
+        return this.data.rpc_result.data.version
+      }
+      return '??'
+    },
+    CachedItems () {
+      if (this.data.rpc_result && this.data.rpc_result.code === 0) {
+        let obj = this.data.rpc_result.data.graph.cache
+        let arr = Object.keys(obj).map(function(key) {
+          return obj[key].round
+        })
+        return arr.reduce((a, b) => a + b)
+      }
+      return 0;
+    }
+  },
+  methods: {
+    toggle () {
+      this.toggleTechieDetails = !this.toggleTechieDetails 
     }
   }
 }
@@ -70,17 +116,17 @@ export default {
 <style scoped>
 .node {
   text-align: left;
-  padding: 10px 20px;
   background: #fff;
   box-shadow: 0 1px 0 0 rgba(0,0,0,0.3), 0 0px 3px 0 rgba(0,0,0,0.06);
   display: flex;
+  flex-direction: column;
 }
 .node.active {
   box-shadow: 0 1px 0 0 rgb(92, 198, 255), 0 0px 3px 0 rgba(92, 198, 255, 0.2);
 }
 .node-info {
   flex: 1;
-  margin-right: 40px;
+  margin-right: 10px;
 }
 .node-stat {
   flex: 0;
@@ -93,8 +139,8 @@ export default {
 .stat-spot {
   border-radius: 99em;
   /* box-shadow: inset 0 0 20px rgba(0,0,0,0.2); */
-  height: 28px;
-  width: 28px;
+  height: 20px;
+  width: 20px;
   display: block;
   /* border: 1px solid #979797; */
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.50);
@@ -103,8 +149,8 @@ export default {
 
 .stat-spot .stat-base {
   position: absolute;
-  width: 26px;
-  height: 26px;
+  width: 18px;
+  height: 18px;
   top: 1px;
   left: 1px;
   border-radius: 99em;
@@ -113,8 +159,8 @@ export default {
 }
 .stat-spot .stat-hlight-base {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 14px;
+  height: 14px;
   top: 3px;
   left: 3px;
   border-radius: 99em;
@@ -123,24 +169,26 @@ export default {
 }
 .stat-spot .stat-hlight {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  width: 14px;
+  height: 14px;
   top: 0px;
   left: 3px;
   z-index: 4;
 }
 .stat-spot.active {
-  box-shadow: 0 1px 10px 0 rgb(92, 198, 255);
+  box-shadow: 0 1px 6px 0 rgb(92, 198, 255);
 }
 .stat-spot.active .stat-base {
+  animation: breathe 4s ease 0s infinite alternate;
   background-image: linear-gradient(-180deg, #0080C4 0%, #00EBF8 100%);
 }
 .stat-spot.active .stat-hlight-base {
+  animation: breathe 4s ease 0s infinite alternate;
   background-image: linear-gradient(-180deg, #0080C4 0%, #00EBF8 100%);
 }
 .stat-spot.active .stat-hlight-base::before {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
   border-radius: 99em;
   display: block;
   left: 3px;
@@ -151,12 +199,69 @@ export default {
   z-index: 5;
   /* box-shadow: 0 0 6px #fff; */
 }
+.node-top {
+  display: flex;
+  padding: 10px 20px 10px 20px;
+}
+.node-info-top {
+  display: flex;
+}
 .name {
+  flex: 1;
   color: rgb(63, 153, 247);
   font-weight: bold;
+  margin-bottom: 6px;
 }
-.addr, .text {
-  font-size: 14px;
+.version {
+  font-size: 12px;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace
+}
+.techie, .techie-details {
+  background: rgba(196, 148, 148, 0.08);
+  display: flex;
+  padding: 8px 20px;
+  color: rgba(183, 184, 186, 1);
+  font-size: 12px;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace
+}
+.techie-details {
+  flex-direction: column;
+  background: rgba(48, 44, 50, 1);
+  color: rgb(110, 209, 255);
+  box-shadow: inset 0 1px 0 0 rgba(0,0,0,0.06);
+  transform: rotateX(90deg);
+  padding: 0 20px;
+  height: 0;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+.techie-details.open {
+  height: auto;
+  padding: 8px 20px;
+  opacity: 1;
+  transform: rotateX(0);
+}
+.text {
+  font-size: 13px;
   opacity: 0.6;
+}
+.addr, .topology {
+  flex: 1;
+}
+.topology {
+  flex: 0;
+}
+.techie-details > * {
+  display: flex;
+}
+.techie-details > .row > .label {
+  flex-basis: 80px;
+  white-space: nowrap;
+}
+.techie-details > .row > .value {
+  flex: 1;
+}
+@keyframes breathe { 
+  from { opacity: 0.2; } to { opacity: 1; }
 }
 </style>

@@ -31,7 +31,8 @@
     </div>
     <div class="footer">
       <div class="datetime">Last updated: {{updatedAt}}</div>
-      <div class="datetime">contacts: wei@fox.one</div>
+      <div class="meta">
+        <a v-tooltip="'wei@fox.one'" href="#">Contacts</a> · <a class="source" style="opacity: 1" href="https://github.com/fox-one/foxone-network-monitor">Github</a></div>
     </div>
   </section>
 </template>
@@ -45,10 +46,12 @@ export default {
     Node
   },
   async mounted () {
-    const result = await this.$axios.$get('//node.f1ex.io/nodes-status.json?id=' + (Date.now() + Math.random()), {
-      withCredentials: true
-    })
+    // const result = await this.$axios.$get('//node.f1ex.io/nodes-status.json?id=' + (Date.now() + Math.random()), {
+    //   withCredentials: true
+    // })
+    const result = require('~/static/mocking.json')
     this.nodes = result.nodes
+    console.log(result)
     this.updatedAt = new Date(result.updatedAt).toLocaleString()
   },
   data () {
@@ -130,7 +133,12 @@ export default {
 
 .footer {
   margin: 40px 0 40px 0;
-  opacity: 0.6;
   font-size: 12px;
+}
+.footer > .datetime {
+  opacity: 0.6;
+}
+.footer > .meta {
+  color: #999;
 }
 </style>

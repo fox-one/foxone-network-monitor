@@ -24,6 +24,11 @@ html {
   margin: 0;
 }
 
+a {
+  color: rgb(92, 198, 255);
+  text-decoration: none;
+}
+
 .button--green {
   display: inline-block;
   border-radius: 4px;
