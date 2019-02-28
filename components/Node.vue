@@ -48,7 +48,7 @@
       </div>
       <div class="row">
         <div class="label">Topology:</div>
-        <div class="value">{{data.rpc_result.data.graph.topology}}</div>
+        <div class="value">{{Topology}}</div>
       </div>
     </div>
 
@@ -90,6 +90,12 @@ export default {
     Version() {
       if (this.data.rpc_result && this.data.rpc_result.code === 0) {
         return this.data.rpc_result.data.version
+      }
+      return '??'
+    },
+    Topology() {
+      if (this.data.rpc_result && this.data.rpc_result.code === 0) {
+        return this.data.rpc_result.data.graph.topology
       }
       return '??'
     },
