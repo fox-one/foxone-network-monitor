@@ -1,0 +1,24 @@
+{
+  "name": "foxone-node",
+  "version": "1.0.0",
+  "description": "Mixin Network Monitor",
+  "author": "Wei",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.3.6",
+    "@nuxtjs/pwa": "^2.6.0",
+    "cross-env": "^5.2.0",
+    "nuxt": "^2.4.0",
+    "v-tooltip": "^2.0.0-rc.33",
+    "vue-js-popover": "^1.1.8"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
