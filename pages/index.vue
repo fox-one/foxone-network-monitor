@@ -46,12 +46,9 @@ export default {
     Node
   },
   async mounted () {
-    const result = await this.$axios.$get('//node.f1ex.io/nodes-status.json?id=' + (Date.now() + Math.random()), {
-      withCredentials: true
-    })
+    const result = await this.$axios.$get('//node.f1ex.io/mixin-nodes-stat.json?id=' + (Date.now() + Math.random()))
     // const result = require('~/static/mocking.json')
     this.nodes = result.nodes
-    console.log(result)
     this.updatedAt = new Date(result.updatedAt).toLocaleString()
   },
   data () {
@@ -62,14 +59,14 @@ export default {
   },
   computed: {
     onlineMixinNodes () {
-      var nodes = this.nodes.filter((x) => x.rpc_result.code === 0)
+      var nodes = this.nodes.filter((x) => x.stat.code === 0)
       nodes.sort((a, b) => {
         return (a.name > b.name ? 1 : -1)
       })
       return nodes
     },
     offlineMixinNodes () {
-      var nodes = this.nodes.filter((x) => x.rpc_result.code !== 0)
+      var nodes = this.nodes.filter((x) => x.stat.code !== 0)
       nodes.sort((a, b) => {
         return (a.name > b.name ? 1 : -1)
       })

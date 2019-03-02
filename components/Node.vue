@@ -50,11 +50,47 @@
         <div class="label">Topology:</div>
         <div class="value">{{Topology}}</div>
       </div>
+      <div class="row">
+        <div class="label">Last Snapshots</div>
+        <div class="value">
+        </div>
+      </div>
+      <template v-for="trans, idx in lastSnapshots">
+        <div class="row lvl-1 first">
+          <div class="label">Snapshot #{{idx}}:</div>
+          <div class="value">{{trans.hash}}</div>
+        </div>
+        <div class="row lvl-1">
+          <div class="label">Time:</div>
+          <div class="value">{{(new Date(trans.timestamp/1000000)).toLocaleString()}}</div>
+        </div>
+        <div class="row lvl-1">
+          <div class="label">Assets:</div>
+          <div class="value">{{trans.transaction.asset}}</div>
+        </div>
+        <div class="row lvl-1 last">
+          <div class="label">Outputs:</div>
+          <div class="value"></div>
+        </div>
+        <template v-for="out in trans.transaction.outputs">
+          <div class="row lvl-2">
+            <div class="label">Amount:</div>
+            <div class="value">
+              {{out.amount}}
+            </div>
+          </div>
+          <div class="row lvl-2 last">
+            <div class="label">Type:</div>
+            <div class="value">
+              {{out.type}}
+            </div>
+          </div>
+        </template>
+      </template>
     </div>
 
     <div class="techie" @click="toggle">
       <div class="addr">{{data.host}}</div>
-      <!-- <div class="topology">Topology: {{data.rpc_result.data.graph.topology}}</div> -->
     </div>
   </div>
 </template>
@@ -66,42 +102,43 @@ export default {
       name: '',
       host: '',
       test: '',
-      rpc_result: {},
+      stat: {},
     }
   },
   data () {
     return {
-      toggleTechieDetails: false
+      toggleTechieDetails: false,
+      lastSnapshots: []
     }
   },
   computed: {
     isActive() {
-      if (this.data.rpc_result && this.data.rpc_result.code === 0) {
+      if (this.data.stat && this.data.stat.code === 0) {
         return true
       }
       return false
     },
     Tooltips() {
-      if (this.data.rpc_result && this.data.rpc_result.code === 0) {
+      if (this.data.stat && this.data.stat.code === 0) {
         return 'Working'
       }
-      return this.data.rpc_result.data
+      return this.data.stat.data
     },
     Version() {
-      if (this.data.rpc_result && this.data.rpc_result.code === 0) {
-        return this.data.rpc_result.data.version
+      if (this.data.stat && this.data.stat.code === 0) {
+        return this.data.stat.data.version
       }
       return '??'
     },
     Topology() {
-      if (this.data.rpc_result && this.data.rpc_result.code === 0) {
-        return this.data.rpc_result.data.graph.topology
+      if (this.data.stat && this.data.stat.code === 0) {
+        return this.data.stat.data.graph.topology
       }
       return '??'
     },
     CachedItems () {
-      if (this.data.rpc_result && this.data.rpc_result.code === 0) {
-        let obj = this.data.rpc_result.data.graph.cache
+      if (this.data.stat && this.data.stat.code === 0) {
+        let obj = this.data.stat.data.graph.cache
         let arr = Object.keys(obj).map(function(key) {
           return obj[key].round
         })
@@ -111,8 +148,15 @@ export default {
     }
   },
   methods: {
-    toggle () {
+    async toggle () {
       this.toggleTechieDetails = !this.toggleTechieDetails 
+      if (this.toggleTechieDetails) {
+        const result = await this.$axios.$post('https://1r7l1xqqj5.execute-api.ap-northeast-1.amazonaws.com/prod/MixinNetworkMonitor', {
+          "op":"list-snapshots",
+          "params":[this.data.host]
+        })
+        this.lastSnapshots = result
+      }
     }
   }
 }
@@ -240,6 +284,7 @@ export default {
   height: 0;
   opacity: 0;
   transition: all 0.2s ease;
+  overflow: scroll;
 }
 .techie-details.open {
   height: auto;
@@ -257,15 +302,54 @@ export default {
 .topology {
   flex: 0;
 }
-.techie-details > * {
+.row {
   display: flex;
 }
-.techie-details > .row > .label {
+.row > .label {
+  color: rgba(196, 151, 107, 1);
   flex-basis: 80px;
   white-space: nowrap;
 }
-.techie-details > .row > .value {
+.row > .value {
   flex: 1;
+}
+.row {
+
+}
+.row::before {
+  color: rgba(88,88,88,1);
+}
+.row.lvl-1 {
+  margin-left: 8px;
+}
+.row.lvl-1::before {
+  content: "├";
+  margin-right: 4px;
+}
+.row.lvl-1.last::before {
+  content: "└";
+}
+.row.lvl-1.first::before {
+  content: "┌";
+}
+.row.lvl-1 > .label {
+  flex-basis: 120px;
+}
+.row.lvl-2 {
+  margin-left: 24px;
+}
+.row.lvl-2::before {
+  content: "├";
+  margin-right: 4px;
+}
+.row.lvl-2.first::before {
+  content: "┌";
+}
+.row.lvl-2.last::before {
+  content: "└";
+}
+.row.lvl-2 > .label {
+  flex-basis: 104px;
 }
 @keyframes breathe { 
   from { opacity: 0.2; } to { opacity: 1; }
