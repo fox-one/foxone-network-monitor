@@ -3,6 +3,17 @@
     <div class="top">
       <h1 class="title">Mixin Network Monitor</h1>
     </div>
+    <div class="nodelist-title">~ Planning ~</div>
+    <div class="nodelist">
+      <div class="node-wrapper">
+        <div class="empty-node">
+          <a :href="mgr.link" class="node-mgr" v-for="mgr in managers">
+            <img class="node-mgr-icon" :href="mgr.icon" />
+            <span class="node-mgr-name">{{mgr.name}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
     <div class="nodelist-title">~ Online Nodes ~</div>
     <div class="nodelist">
       <template v-if="onlineMixinNodes.length !== 0">
@@ -46,14 +57,30 @@ export default {
     Node
   },
   async mounted () {
-    const result = await this.$axios.$get('//node.f1ex.io/mixin-nodes-stat.json?id=' + (Date.now() + Math.random()))
-    // const result = require('~/static/mocking.json')
+    const result = await this.$axios.$get('https://node.f1ex.io/mixin-nodes-stat.json?id=' + (Date.now() + Math.random()))
     this.nodes = result.nodes
     this.updatedAt = new Date(result.updatedAt).toLocaleString()
   },
   data () {
     return {
       nodes: [],
+      managers: [{
+        name: 'F1EX Node',
+        icon: require('~/assets/f1ex.png'),
+        link: '',
+      }, {
+        name: 'B1',
+        icon: '~/assets/images/b1.png',
+        link: '',
+      }, {
+        name: 'EXIN',
+        icon: '~/assets/images/exin.png',
+        link: '',
+      }, {
+        name: 'SS',
+        icon: '~/assets/images/ss.png',
+        link: '',
+      }],
       updatedAt: new Date(),
     }
   },
@@ -122,6 +149,33 @@ export default {
   /* width: 400px; */
   width: 100%;
 }
+
+.empty-node {
+  display: flex;
+}
+.empty-node .node-mgr {
+  background: white;
+  flex: 1;
+  box-shadow: 0 1px 0 0 rgb(92, 198, 255), 0 0px 3px 0 rgba(92, 198, 255, 0.2);
+  margin-right: 10px;
+}
+.empty-node .node-mgr:last-child {
+  margin-right: 0px;
+}
+.empty-node .node-mgr-icon {
+  height: 72px;
+  width: 72px;
+  display: block;
+}
+.empty-node .node-mgr-name {
+  width: 100%;
+  display: block;
+  padding: 8px 0;
+  font-size: 14px;
+  color: rgba(0,0,0,0.6);
+  background: rgba(196, 148, 148, 0.08);
+}
+
 .hint {
   padding: 0 0 40px 0;
   opacity: 0.6;
