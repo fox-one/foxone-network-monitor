@@ -43,6 +43,14 @@
 
     <div class="techie-details"  :class="toggleTechieDetails? 'open': ''">
       <div class="row">
+        <div class="label">Node:</div>
+        <div class="value">{{StatData ? StatData.node : '??'}}</div>
+      </div>
+      <div class="row">
+        <div class="label">Network:</div>
+        <div class="value">{{StatData ? StatData.network : '??'}}</div>
+      </div>
+      <div class="row">
         <div class="label">Cached:</div>
         <div class="value">{{CachedItems}}</div>
       </div>
@@ -51,41 +59,32 @@
         <div class="value">{{Topology}}</div>
       </div>
       <div class="row">
-        <div class="label">Last Snapshots</div>
+        <div class="label">Latest Snapshots</div>
         <div class="value">
         </div>
       </div>
-      <template v-for="trans, idx in lastSnapshots">
+      <template v-for="snapshot, idx in lastSnapshots">
         <div class="row lvl-1 first">
-          <div class="label">Snapshot #{{idx}}:</div>
-          <div class="value">{{trans.hash}}</div>
+          <img v-if="snapshot.meta.assetIcon" class="icon-bg" :src="snapshot.meta.assetIcon"/>
+          <div class="label">Transaction #{{idx}}:</div>
+          <div class="value">{{snapshot.hash}}</div>
         </div>
         <div class="row lvl-1">
           <div class="label">Time:</div>
-          <div class="value">{{(new Date(trans.timestamp/1000000)).toLocaleString()}}</div>
+          <div class="value">{{(new Date(snapshot.timestamp/1000000)).toLocaleString()}}</div>
         </div>
         <div class="row lvl-1">
           <div class="label">Assets:</div>
-          <div class="value">{{trans.transaction.asset}}</div>
+          <div class="value">{{snapshot.meta.assetName.toUpperCase()}}</div>
+        </div>
+        <div class="row lvl-1">
+          <div class="label">Amount:</div>
+          <div class="value">{{snapshot.meta.amount}}</div>
         </div>
         <div class="row lvl-1 last">
-          <div class="label">Outputs:</div>
-          <div class="value"></div>
+          <div class="label">Type:</div>
+          <div class="value">{{snapshot.meta.type}}</div>
         </div>
-        <template v-for="out in trans.transaction.outputs">
-          <div class="row lvl-2">
-            <div class="label">Amount:</div>
-            <div class="value">
-              {{out.amount}}
-            </div>
-          </div>
-          <div class="row lvl-2 last">
-            <div class="label">Type:</div>
-            <div class="value">
-              {{out.type}}
-            </div>
-          </div>
-        </template>
       </template>
     </div>
 
@@ -96,6 +95,10 @@
 </template>
 
 <script>
+const assetsMapping = {
+  'a99c2e0e2b1da4d648755ef19bd95139acbbe6564cfb06dec7cd34931ca72cdc': 'xin',
+  'b9f49cf777dc4d03bc54cd1367eebca319f8603ea1ce18910d09e2c540c630d8': 'cnb',
+}
 export default {
   props: {
     data: {
@@ -136,6 +139,12 @@ export default {
       }
       return '??'
     },
+    StatData() {
+      if (this.data.stat && this.data.stat.code === 0) {
+        return this.data.stat.data
+      }
+      return null
+    },
     CachedItems () {
       if (this.data.stat && this.data.stat.code === 0) {
         let obj = this.data.stat.data.graph.cache
@@ -148,14 +157,46 @@ export default {
     }
   },
   methods: {
+    getTransObject (snapshot) {
+      let transaction = snapshot.transaction
+      let inputs = transaction.inputs
+      let obj = {}
+      if (inputs.length) {
+        if (inputs[0].deposit) {
+          obj.type = '💰 Deposit'
+        } else if (inputs[0].mint) {
+          obj.type = '🏦 Mint'
+        } else if (inputs[0].genesis) {
+          obj.type = '🥚 Genesis'
+        } else {
+          obj.type = '💵 Transaction'
+        }
+      }
+      if (transaction.outputs) {
+        obj.amount = transaction.outputs[0].amount
+      }
+      if (assetsMapping.hasOwnProperty(transaction.asset)) {
+        obj.assetName = assetsMapping[transaction.asset]
+        obj.assetIcon = require('~/assets/images/coins/' + obj.assetName + '.png')
+      } else {
+        obj.assetName = `Unknown (${transaction.asset})`
+        obj.assetIcon = null
+      }
+      obj.asset = transaction.asset
+      return obj
+    },
     async toggle () {
       this.toggleTechieDetails = !this.toggleTechieDetails 
       if (this.toggleTechieDetails) {
         const result = await this.$axios.$post('https://1r7l1xqqj5.execute-api.ap-northeast-1.amazonaws.com/prod/MixinNetworkMonitor', {
-          "op":"list-snapshots",
-          "params":[this.data.host]
+          "op":"get-topsnapshots",
+          "params": [this.data.host]
         })
-        this.lastSnapshots = result
+        this.lastSnapshots = result.map((x) => {
+          x.meta = this.getTransObject(x)
+          return x
+        })
+        this.lastSnapshots.reverse()
       }
     }
   }
@@ -313,8 +354,14 @@ export default {
 .row > .value {
   flex: 1;
 }
-.row {
-
+.row .icon-bg {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  right: 10px;
+  z-index: -1;
+  opacity: 0.3;
+  border-radius: 99em;
 }
 .row::before {
   color: rgba(88,88,88,1);

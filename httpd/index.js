@@ -12,7 +12,17 @@ async function rpcNode(node, payload) {
     body: payload,
     timeout: 5000
   })
-  return resp
+  try {
+    let ret = JSON.parse(resp)
+    if (ret.data) {
+      return ret.data
+    } else {
+      return ret
+    }
+  } catch (e) {
+    return {"failed": e.toString()}
+  }
+
 }
 
 async function handleGetNodes() {
@@ -53,7 +63,7 @@ async function handleCheckNodes () {
         "method": "getinfo",
         "params": []
       })
-      node.stat = { code: 0, data: JSON.parse(ret)}
+      node.stat = { code: 0, data: ret}
       result.push(node)
     } catch (e) {
       node.stat = { code: 0, data: e.toString()}
@@ -70,6 +80,21 @@ async function handleListSnapshots (addr) {
     "params": [0, 10, true, true]
   })
   return ret
+}
+
+async function handleGetTopSnapshots(addr) {
+  let info = await rpcNode({host: addr }, {
+    "method": "getinfo", "params": []
+  })
+  let topology = info.graph.topology
+  if (topology) {
+    let topSnapshots = await rpcNode({host: addr}, {
+      "method": "listsnapshots", "params": [topology - 10, 10, true, true]
+    })
+    return topSnapshots
+  } else {
+    return {code: 10002, data: "invalid topology"}
+  }
 }
 
 exports.handler = async (event) => {
@@ -104,10 +129,19 @@ exports.handler = async (event) => {
     case 'list-snapshots':
       if (cmd.params && cmd.params.length) {
         let snapshots = await handleListSnapshots(cmd.params[0])
-        response.body = snapshots
+        response.body = JSON.stringify(snapshots)
       } else {
         response.body = JSON.stringify({code: 10001, data: "invalid params"})
       }
+      break
+    case 'get-topsnapshots':
+      if (cmd.params && cmd.params.length) {
+        let snapshots = await handleGetTopSnapshots(cmd.params[0])
+        response.body = JSON.stringify(snapshots)
+      } else {
+        response.body = JSON.stringify({code: 10001, data: "invalid params"})
+      }
+      break
     default:
       break
   }

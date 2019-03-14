@@ -17,7 +17,6 @@ module.exports = {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/images/128-app.png' },
       { rel: 'apple-touch-icon', type: 'image/png', href: '/images/512-app.png' }
-
     ]
   },
 

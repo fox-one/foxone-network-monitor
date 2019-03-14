@@ -3,17 +3,23 @@
     <div class="top">
       <h1 class="title">Mixin Network Monitor</h1>
     </div>
-    <div class="nodelist-title">~ Planning ~</div>
+    <!-- <div class="nodelist-title">~ Planning Nodes ~</div>
     <div class="nodelist">
       <div class="node-wrapper">
         <div class="empty-node">
-          <a :href="mgr.link" class="node-mgr" v-for="mgr in managers">
-            <img class="node-mgr-icon" :href="mgr.icon" />
+          <template v-for="mgr in managers">
+          <a @click="viewMgr(mgr, $event)" class="node-mgr" :class="mgr.class" >
+            <span class="circle">
+              <span class="outer-circle"></span>
+              <span class="inner-circle"></span>
+            </span>
+            <img class="node-mgr-icon" :src="mgr.icon" />
             <span class="node-mgr-name">{{mgr.name}}</span>
           </a>
+          </template>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="nodelist-title">~ Online Nodes ~</div>
     <div class="nodelist">
       <template v-if="onlineMixinNodes.length !== 0">
@@ -66,20 +72,21 @@ export default {
       nodes: [],
       managers: [{
         name: 'F1EX Node',
-        icon: require('~/assets/f1ex.png'),
-        link: '',
+        icon: require('~/assets/images/f1ex.png'),
+        link: '#',
+        class: 'flicker'
       }, {
         name: 'B1',
-        icon: '~/assets/images/b1.png',
-        link: '',
+        icon: require('~/assets/images/b1.png'),
+        link: 'https://b1.run/mixin',
       }, {
-        name: 'EXIN',
-        icon: '~/assets/images/exin.png',
-        link: '',
+        name: 'EXIN Pool',
+        icon: require('~/assets/images/exin.png'),
+        mixinId: '7000101761',
       }, {
         name: 'SS',
-        icon: '~/assets/images/ss.png',
-        link: '',
+        icon: require('~/assets/images/ss.png'),
+        mixinId: '7000101762',
       }],
       updatedAt: new Date(),
     }
@@ -98,6 +105,16 @@ export default {
         return (a.name > b.name ? 1 : -1)
       })
       return nodes
+    },
+  },
+  methods: {
+    viewMgr (mgr, evt) {
+      evt.preventDefault()
+      if (mgr.link) {
+        window.location.href = mgr.link
+      } else {
+        alert('Search "' + mgr.mixinId + '" in Mixin Messenger.')
+      }
     }
   }
 }
@@ -158,14 +175,20 @@ export default {
   flex: 1;
   box-shadow: 0 1px 0 0 rgb(92, 198, 255), 0 0px 3px 0 rgba(92, 198, 255, 0.2);
   margin-right: 10px;
+  position: relative;
 }
 .empty-node .node-mgr:last-child {
   margin-right: 0px;
 }
 .empty-node .node-mgr-icon {
-  height: 72px;
-  width: 72px;
+  height: 64px;
+  width: 64px;
   display: block;
+  padding: 10px;
+  margin: 0 auto;
+  border-radius: 99em;
+  position: relative;
+  z-index: 9;
 }
 .empty-node .node-mgr-name {
   width: 100%;
@@ -175,7 +198,46 @@ export default {
   color: rgba(0,0,0,0.6);
   background: rgba(196, 148, 148, 0.08);
 }
-
+.empty-node .node-mgr.flicker .circle {
+  /* animation: rotatecircle 4s linear; */
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  margin-left: -25px;
+  background: #fff;
+  border-radius: 99em;
+  height: 48px;
+  width: 48px;
+}
+.empty-node .node-mgr.flicker .outer-circle {
+  background-color: transparent;
+  border: 4px solid rgba(0, 187, 255, 0.2);
+  opacity: .9;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+  border-radius: 99em;
+  width: 56px;
+  height: 56px;
+  position: absolute;
+  margin-top: -3px;
+  margin-left: -3px;
+  display: block;
+  animation: spinPulse 3s infinite ease-in-out;
+}
+.empty-node .node-mgr.flicker .inner-circle {
+  background-color: transparent;
+  border: 1px solid rgba(0, 187, 255, 0.6);
+  opacity: .9;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-radius: 99em;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  animation: spinoffPulse 1s infinite linear;
+}
 .hint {
   padding: 0 0 40px 0;
   opacity: 0.6;
@@ -191,5 +253,19 @@ export default {
 }
 .footer > .meta {
   color: #999;
+}
+
+@keyframes spinPulse {
+  0% { transform:rotate(160deg); opacity:0; box-shadow:0 0 1px rgb(0, 187, 255); }
+	50% { transform:rotate(145deg); opacity:1;}
+	100% { transform:rotate(-320deg); opacity:0; }
+}
+@keyframes spinoffPulse {
+  0% { transform:rotate(0deg); }
+	100% { transform:rotate(360deg); }
+}
+@keyframes rotatecircle {
+  0% { transform:rotate(0deg); }
+  100% { transform:rotate(-360deg); }
 }
 </style>
