@@ -173,7 +173,9 @@ export default {
         }
       }
       if (transaction.outputs) {
-        obj.amount = transaction.outputs[0].amount
+        obj.amount = transaction.outputs.map((x) => parseFloat(x.amount)).reduce((a, b) => {
+          return a + b
+        })
       }
       if (assetsMapping.hasOwnProperty(transaction.asset)) {
         obj.assetName = assetsMapping[transaction.asset]
