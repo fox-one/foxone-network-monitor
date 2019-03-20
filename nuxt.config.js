@@ -35,7 +35,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    {ssr: false, src: 'plugins/vue-popover'}
+    {ssr: false, src: 'plugins/vue-popover'},
+    {ssr: false, src: 'plugins/vue-ele'}
   ],
 
   /*
@@ -51,6 +52,13 @@ module.exports = {
   */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+  },
+  generate: {
+    routes: [
+      '/',
+      '/tools/calculators',
+      '/about'
+    ]
   },
 
   /*

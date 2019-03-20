@@ -1,13 +1,39 @@
 <template>
-  <div>
-    <nuxt />
-  </div>
+  <el-container style="height: 100%">
+    <el-aside width="64px" style="height: 100%">
+      <el-menu
+        :collapse="true"
+        :router="true"
+        style="height: 100%"
+        menu-trigger="hover"
+        :default-active="this.$route.path"
+        class="el-menu-vertical-demo"
+        background-color="rgba(0,0,0,0)"
+        text-color="#000"
+        active-text-color="rgb(92, 198, 255)">
+        <el-menu-item index="/">
+          <i class="el-icon-menu"></i>
+          <span slot="title">Network</span>
+        </el-menu-item>
+        <el-menu-item index="/tools/calculators">
+          <i class="el-icon-sort"></i>
+          <span slot="title">Miner Calculators</span>
+        </el-menu-item>
+        <el-menu-item index="/about">
+          <i class="el-icon-info"></i>
+          <span slot="title">About</span>
+        </el-menu-item>
+      </el-menu>
+    </el-aside>
+    <el-main style="padding: 0px">
+      <nuxt />
+    </el-main>
+  </el-container>
 </template>
 
 <style>
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -15,6 +41,10 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+  background: rgba(242, 243, 244, 1);
+}
+html, body, #__nuxt, #__layout {
+  height: 100%;
 }
 
 *,
@@ -163,5 +193,40 @@ a {
   visibility: visible;
   opacity: 1;
   transition: opacity .15s;
+}
+
+.top {
+  margin: 20px 0;
+}
+
+.container {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.page-title {
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  display: block;
+  font-weight: 300;
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+
+.section-title {
+  margin: 40px 0 20px 0;
+  opacity: 0.6;
+}
+
+.pane-like {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 3px;
+  box-shadow: 0 0 40px rgba(0,0,0, 0.06);
+  margin-bottom: 40px;
 }
 </style>

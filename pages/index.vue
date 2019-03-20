@@ -1,9 +1,9 @@
 <template>
   <section class="container">
     <div class="top">
-      <h1 class="title">Mixin Network Monitor</h1>
+      <h1 class="title page-title">Mixin Network Monitor</h1>
     </div>
-    <!-- <div class="nodelist-title">~ Planning Nodes ~</div>
+    <div class="nodelist-title section-title">~ Planning Nodes ~</div>
     <div class="nodelist">
       <div class="node-wrapper">
         <div class="empty-node">
@@ -19,8 +19,8 @@
           </template>
         </div>
       </div>
-    </div> -->
-    <div class="nodelist-title">~ Online Nodes ~</div>
+    </div>
+    <div class="nodelist-title section-title">~ Online Nodes ~</div>
     <div class="nodelist">
       <template v-if="onlineMixinNodes.length !== 0">
         <div class="node-wrapper" v-for="node in onlineMixinNodes">
@@ -33,7 +33,7 @@
         </div>
       </template>
     </div>
-    <div class="nodelist-title">~ Can't be reached ~</div>
+    <div class="nodelist-title section-title">~ Can't be reached ~</div>
     <div class="nodelist">
       <template v-if="offlineMixinNodes.length !== 0">
         <div class="node-wrapper" v-for="node in offlineMixinNodes">
@@ -71,16 +71,16 @@ export default {
     return {
       nodes: [],
       managers: [{
-        name: 'F1EX Node',
+        name: 'F1EX',
         icon: require('~/assets/images/f1ex.png'),
-        link: '#',
+        link: 'https://www.jianshu.com/p/ae8f7f6696d1',
         class: 'flicker'
       }, {
         name: 'B1',
         icon: require('~/assets/images/b1.png'),
         link: 'https://b1.run/mixin',
       }, {
-        name: 'EXIN Pool',
+        name: 'EXIN',
         icon: require('~/assets/images/exin.png'),
         mixinId: '7000101761',
       }, {
@@ -93,14 +93,14 @@ export default {
   },
   computed: {
     onlineMixinNodes () {
-      var nodes = this.nodes.filter((x) => x.stat.code === 0)
+      var nodes = this.nodes.filter((x) => x.stat.code === 0 && x.stat.data.version)
       nodes.sort((a, b) => {
         return (a.name > b.name ? 1 : -1)
       })
       return nodes
     },
     offlineMixinNodes () {
-      var nodes = this.nodes.filter((x) => x.stat.code !== 0)
+      var nodes = this.nodes.filter((x) => x.stat.code !== 0 || !x.stat.data.hasOwnProperty('version'))
       nodes.sort((a, b) => {
         return (a.name > b.name ? 1 : -1)
       })
@@ -121,35 +121,7 @@ export default {
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  background: rgba(242, 243, 244, 1);
-  display: flex;
-  /* justify-content: center; */
-  align-items: center;
-  text-align: center;
-  flex-direction: column;
-}
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 32px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.top {
-  margin: 40px 0;
-}
-
-.nodelist-title {
-  margin: 40px 0 20px 0;
-  opacity: 0.6;
-}
 .nodelist {
   display: flex;
   flex-wrap: wrap;

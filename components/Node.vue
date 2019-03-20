@@ -4,7 +4,7 @@
       <div class="node-info">
         <div class="node-info-top">
           <div class="name">{{data.name}}</div>
-          <a class="version" :href="'//github.com/MixinNetwork/mixin/commit/' + Version">{{Version.slice(0, 8)}}</a>
+          <a v-if="StatData" class="version" :href="'//github.com/MixinNetwork/mixin/commit/' + StatData.version">{{StatData.version.slice(0, 8)}}</a>
         </div>
         <div class="text">{{data.text}}</div>
       </div>
@@ -56,7 +56,7 @@
       </div>
       <div class="row">
         <div class="label">Topology:</div>
-        <div class="value">{{Topology}}</div>
+        <div class="value">{{StatData ? StatData.graph.topology : '??'}}</div>
       </div>
       <div class="row">
         <div class="label">Latest Snapshots</div>
@@ -116,38 +116,26 @@ export default {
   },
   computed: {
     isActive() {
-      if (this.data.stat && this.data.stat.code === 0) {
+      if (this.StatData) {
         return true
       }
       return false
     },
     Tooltips() {
-      if (this.data.stat && this.data.stat.code === 0) {
+      if (this.StatData) {
         return 'Working'
       }
-      return this.data.stat.data
-    },
-    Version() {
-      if (this.data.stat && this.data.stat.code === 0) {
-        return this.data.stat.data.version
-      }
-      return '??'
-    },
-    Topology() {
-      if (this.data.stat && this.data.stat.code === 0) {
-        return this.data.stat.data.graph.topology
-      }
-      return '??'
+      return 'Offline'
     },
     StatData() {
-      if (this.data.stat && this.data.stat.code === 0) {
+      if (this.data.stat && this.data.stat.code === 0 && this.data.stat.data.version) {
         return this.data.stat.data
       }
       return null
     },
     CachedItems () {
-      if (this.data.stat && this.data.stat.code === 0) {
-        let obj = this.data.stat.data.graph.cache
+      if (this.StatData) {
+        let obj = this.StatData.graph.cache
         let arr = Object.keys(obj).map(function(key) {
           return obj[key].round
         })
@@ -188,6 +176,9 @@ export default {
       return obj
     },
     async toggle () {
+      if (this.StatData === null) {
+        return 
+      }
       this.toggleTechieDetails = !this.toggleTechieDetails 
       if (this.toggleTechieDetails) {
         const result = await this.$axios.$post('https://1r7l1xqqj5.execute-api.ap-northeast-1.amazonaws.com/prod/MixinNetworkMonitor', {
