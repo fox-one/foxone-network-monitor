@@ -28,8 +28,8 @@ const nodes = [{
     "text": "The #5 node hosted by Big.ONE.",
     "signer": "XINRZtoDKwH2zEFK4vSv3eGGeQuB59gvyXpJ86VEdComApj1LGECaexCQRqdQDtdGvhKwRMWjstYhNcBHPwaSV7bz59htxGq",
   }, {
-    "name": "Exin Node 0",
-    "text": "The #0 node hosted by Exin.",
+    "name": "ExinPool",
+    "text": "A node hosted by ExinPool.",
     "signer": "XINYgegkxh5n6oGMHkZYJ1dnCyTezczK3bK526BhB9aKbkDt92qSDZS532gsL3p6dSUHaH4QqiWfuAWdki3anzgw6r1JWdhY",
   }, {
     "name": "Candy",

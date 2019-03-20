@@ -80,8 +80,8 @@ export default {
         icon: require('~/assets/images/b1.png'),
         link: 'https://b1.run/mixin',
       }, {
-        name: 'EXIN',
-        icon: require('~/assets/images/exin.png'),
+        name: 'ExinPool',
+        icon: require('~/assets/images/exinpool.png'),
         mixinId: '7000101761',
       }, {
         name: 'SS',
