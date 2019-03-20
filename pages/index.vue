@@ -80,7 +80,7 @@ export default {
         icon: require('~/assets/images/b1.png'),
         link: 'https://b1.run/mixin',
       }, {
-        name: 'EXIN',
+        name: 'ExinPool',
         icon: require('~/assets/images/exin.png'),
         mixinId: '7000101761',
       }, {
@@ -141,6 +141,7 @@ export default {
 
 .empty-node {
   display: flex;
+  cursor: pointer;
 }
 .empty-node .node-mgr {
   background: white;

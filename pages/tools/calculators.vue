@@ -117,7 +117,7 @@ export default {
       result.annualizedRateOfReturn = (result.yearlyRewardsPerNode/FULLNODE_CAP) * 100
       this.miningRewardsResult = [{
         key: 'Yearly rewards/node',
-        value: result.yearlyRewardsPerNode.toFixed(4) + ' XIN'
+        value: result.yearlyRewardsPerNode.toFixed(2) + ' XIN'
       }, {
         key: 'Daily rewards/node',
         value: result.dailyRewardsPerNode.toFixed(4) + ' XIN'
@@ -147,7 +147,7 @@ export default {
         value: result.annualizedRateOfReturn.toFixed(2) + '%'
       }, {
         key: 'Annualized return',
-        value: (result.yearlyRewards * form.participates).toFixed(6)
+        value: (result.yearlyRewards * form.participates).toFixed(6) + 'XIN'
       }]
     }
   }
