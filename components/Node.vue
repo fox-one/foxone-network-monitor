@@ -79,7 +79,7 @@
         </div>
         <div class="row lvl-1">
           <div class="label">Amount:</div>
-          <div class="value">{{snapshot.meta.amount}}</div>
+          <div class="value">{{snapshot.meta.amount.toFixed(16)}}</div>
         </div>
         <div class="row lvl-1 last">
           <div class="label">Type:</div>
@@ -95,10 +95,7 @@
 </template>
 
 <script>
-const assetsMapping = {
-  'a99c2e0e2b1da4d648755ef19bd95139acbbe6564cfb06dec7cd34931ca72cdc': 'xin',
-  'b9f49cf777dc4d03bc54cd1367eebca319f8603ea1ce18910d09e2c540c630d8': 'cnb',
-}
+const assetsMapping = require('~/assets/assets.json')
 export default {
   props: {
     data: {
@@ -165,8 +162,8 @@ export default {
           return a + b
         })
       }
-      if (assetsMapping.hasOwnProperty(transaction.asset)) {
-        obj.assetName = assetsMapping[transaction.asset]
+      if (assetsMapping.hasOwnProperty(transaction.asset.toUpperCase())) {
+        obj.assetName = assetsMapping[transaction.asset.toUpperCase()]
         obj.assetIcon = require('~/assets/images/coins/' + obj.assetName + '.png')
       } else {
         obj.assetName = `Unknown (${transaction.asset})`
