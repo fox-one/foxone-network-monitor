@@ -5,7 +5,7 @@
     </div>
 
     <div class="section-title">~ XIN Mining Rewards ~</div>
-    <el-form label-width="100px" class="pane-like">
+    <el-form label-width="100px" class="pane-like calculator">
       <el-form-item label="Rewards Vol">
         <el-input v-model="miningRewardsForm.rewardVolume">
           <template slot="append">XIN</template>          
@@ -40,7 +40,7 @@
     </el-form>
 
     <div class="section-title">~ Fox.ONE Pre-Mining Rewards ~</div>
-    <el-form label-width="120px" class="pane-like">
+    <el-form label-width="120px" class="pane-like calculator">
       <el-form-item label="Daily Rewards">
         <el-input v-model="preMiningRewardsForm.rewardPerDay">
           <template slot="append">XIN</template>          
@@ -81,6 +81,34 @@
       </el-table>       
     </el-form>
 
+
+    <div class="section-title">~ Network Threaten Calculator ~</div>
+    <el-form label-width="120px" class="pane-like calculator">
+      <el-form-item label="Total Nodes">
+        <el-input v-model="threatenForm.totalNode">
+        </el-input>
+      </el-form-item>
+      <el-row style="margin: 10px 0 20px;">
+        <el-button type="primary" @click="calThreatenForm">Calculate</el-button>        
+      </el-row>
+
+      <el-table class="results"
+        empty-text="No data."
+        :show-header="false"
+        :data="threatenResult"
+        size="mini"
+        style="width: 100%">
+        <el-table-column
+          prop="key"
+          width="24">
+        </el-table-column>
+        <el-table-column
+          prop="value"
+        >
+        </el-table-column>
+      </el-table>       
+    </el-form>
+
   </section>
 </template>
 
@@ -102,7 +130,26 @@ export default {
         participates: 1
       },
       preMiningRewardsResult: [],
+      threatenForm: {
+        totalNode: 15,
+      },
+      threatenResult: [],
+      xinPrice: 0,
+      xinCap: 0,
+      networkCap: 0
     }
+  },
+  async mounted () {
+    const result = await this.$axios.$get('https://api.mixin.one/network/assets/top')
+    const assets = result.data
+    assets.forEach((x, index) => {
+      // console.log(x.symbol, x.price_usd)
+      this.networkCap += parseFloat(x.capitalization)
+      if (x.symbol === 'XIN') {
+        this.xinPrice = x.price_usd
+        this.xinCap = parseFloat(x.capitalization)
+      }
+    })
   },
   methods: {
     calMiningRewardForm () {
@@ -149,6 +196,38 @@ export default {
         key: 'Annualized return',
         value: (result.yearlyRewards * form.participates).toFixed(6) + 'XIN'
       }]
+    },
+    calThreatenForm () {
+      const nodeCap = 10000
+      const totalNode = this.threatenForm.totalNode
+      const find_f_in_pbft = () => {
+        for (let f = 0; f < totalNode; f++) {
+          if (((3*f+1) <= totalNode) && ((3 * f + 4) > totalNode)) {
+            return f
+          }
+        }
+        return 0
+      }
+      const minimum_nodes_attack_mixin = () => {
+        return find_f_in_pbft() + 1
+      }
+      const minimum_nodes_control_mixin = () => {
+        return find_f_in_pbft() * 2 + 1
+      }
+      const node2Token = (nodeCount) => nodeCount * nodeCap
+
+      const miniXin2StopMixin = node2Token(minimum_nodes_attack_mixin())
+      const miniXin2CtrlMixin = node2Token(minimum_nodes_control_mixin())
+      this.threatenResult = [{
+        key: '🚫',
+        value: 'Need ' + miniXin2StopMixin + ' XIN ($' + (miniXin2StopMixin * this.xinPrice).toLocaleString() + ') to stop Mixin',
+      }, {
+        key: '㊙️',
+        value: 'Need ' + miniXin2CtrlMixin + ' XIN ($' + (miniXin2CtrlMixin * this.xinPrice).toLocaleString() + ') to control Mixin',
+      }, {
+        key: '💰',
+        value: 'Assets in Mixin: $' + (this.networkCap - this.xinCap).toLocaleString() + '',
+      }]
     }
   }
 }
@@ -164,5 +243,8 @@ export default {
 }
 .results {
   font-size: 12px;
+}
+.calculator {
+  width: 320px; 
 }
 </style>

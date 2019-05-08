@@ -1,30 +1,29 @@
 <template>
   <el-container style="height: 100%">
-    <el-aside width="64px" style="height: 100%">
+    <el-header>
       <el-menu
-        :collapse="true"
+        :mode="'horizontal'"
+        :collapse="false"
         :router="true"
-        style="height: 100%"
         menu-trigger="hover"
         :default-active="this.$route.path"
-        class="el-menu-vertical-demo"
         background-color="rgba(0,0,0,0)"
         text-color="#000"
         active-text-color="rgb(92, 198, 255)">
         <el-menu-item index="/">
           <i class="el-icon-menu"></i>
-          <span slot="title">Network</span>
+          <span slot="title"></span>
         </el-menu-item>
         <el-menu-item index="/tools/calculators">
           <i class="el-icon-sort"></i>
-          <span slot="title">Miner Calculators</span>
+          <span slot="title"></span>
         </el-menu-item>
         <el-menu-item index="/about">
           <i class="el-icon-info"></i>
-          <span slot="title">About</span>
+          <span slot="title"></span>
         </el-menu-item>
       </el-menu>
-    </el-aside>
+    </el-header>
     <el-main style="padding: 0px">
       <nuxt />
     </el-main>
