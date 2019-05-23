@@ -10,7 +10,7 @@ async function rpcNode(node, payload) {
     port: parseInt(parts[1]) + 1000,
     method: 'POST',
     body: payload,
-    timeout: 5000
+    timeout: 8000
   })
   try {
     let ret = JSON.parse(resp)
@@ -40,16 +40,20 @@ async function handleGetNodes() {
     return []
   }
   let tpl = Object.assign(config.nodes, {})
-  for (var i = tpl.length; i--; ) {
-    for (var j = resp.length; j--; ) {
-      if (tpl[i].signer === resp[j].signer) {
-        tpl[i].host = resp[j].host
-        continue
+  let nodes = resp
+  for (var i = nodes.length; i--; ) {
+    nodes[i].name = 'Anonymous Node'
+    nodes[i].text = ''
+    for (var j = tpl.length; j--; ) {
+      if (tpl[j].signer === nodes[i].signer) {
+        nodes[i].name = tpl[j].name
+        nodes[i].text = tpl[j].text
+        break;
       }
     }
   }
   // save to S3
-  await util.putS3(config.bucket, config.nodesFile, { nodes: tpl, updatedAt: (new Date()).toUTCString() })
+  await util.putS3(config.bucket, config.nodesFile, { nodes: nodes, updatedAt: (new Date()).toUTCString() })
   return tpl
 }
 

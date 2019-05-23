@@ -3,7 +3,7 @@
     <div class="top">
       <h1 class="title page-title">Mixin Network Monitor</h1>
     </div>
-    <div class="nodelist-title section-title">~ Planning Nodes ~</div>
+    <div class="nodelist-title section-title">~ Planning Nodes (4) ~</div>
     <div class="nodelist">
       <div class="node-wrapper">
         <div class="empty-node">
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="nodelist-title section-title">~ Online Nodes ~</div>
+    <div class="nodelist-title section-title">{{'~ Online Nodes (' + onlineMixinNodes.length + ') ~'}}</div>
     <div class="nodelist">
       <template v-if="onlineMixinNodes.length !== 0">
         <div class="node-wrapper" v-for="node in onlineMixinNodes">
@@ -33,7 +33,7 @@
         </div>
       </template>
     </div>
-    <div class="nodelist-title section-title">~ Can't be reached ~</div>
+    <div class="nodelist-title section-title">{{"~ Can't be reached (" + offlineMixinNodes.length + ") ~"}}</div>
     <div class="nodelist">
       <template v-if="offlineMixinNodes.length !== 0">
         <div class="node-wrapper" v-for="node in offlineMixinNodes">
@@ -101,9 +101,6 @@ export default {
     },
     offlineMixinNodes () {
       var nodes = this.nodes.filter((x) => x.stat.code !== 0 || !x.stat.data.hasOwnProperty('version'))
-      nodes.sort((a, b) => {
-        return (a.name > b.name ? 1 : -1)
-      })
       return nodes
     },
   },
@@ -195,7 +192,7 @@ export default {
   margin-top: -3px;
   margin-left: -3px;
   display: block;
-  animation: spinPulse 3s infinite ease-in-out;
+  /* animation: spinPulse 3s infinite ease-in-out; */
 }
 .empty-node .node-mgr.flicker .inner-circle {
   background-color: transparent;
@@ -209,7 +206,7 @@ export default {
   position: absolute;
   top: 0px;
   left: 0px;
-  animation: spinoffPulse 1s infinite linear;
+  /* animation: spinoffPulse 1s infinite linear; */
 }
 .hint {
   padding: 0 0 40px 0;
