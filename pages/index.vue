@@ -69,8 +69,8 @@ export default {
     Node,
   },
   async mounted () {
-    // const result = await this.$axios.$get('https://node.f1ex.io/mixin-nodes-stat.json?id=' + (Date.now() + Math.random()))
-    const result = require('../static/mocking.json')
+    const result = await this.$axios.$get('https://node.f1ex.io/mixin-nodes-stat.json?id=' + (Date.now() + Math.random()))
+    // const result = require('../static/mocking.json')
     let nodes = []
     let max = 0
     let min = Number.MAX_SAFE_INTEGER
