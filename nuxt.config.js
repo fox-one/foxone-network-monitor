@@ -36,7 +36,7 @@ module.exports = {
   */
   plugins: [
     {ssr: false, src: 'plugins/vue-popover'},
-    {ssr: false, src: 'plugins/vue-ele'}
+    {ssr: false, src: 'plugins/vant'},
   ],
 
   /*

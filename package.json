@@ -15,8 +15,9 @@
     "@nuxtjs/pwa": "^2.6.0",
     "cross-env": "^5.2.0",
     "element-ui": "^2.6.1",
-    "nuxt": "^2.4.5",
+    "nuxt": "^2.8.1",
     "v-tooltip": "^2.0.0-rc.33",
+    "vant": "^1.6.22",
     "vue-js-popover": "^1.1.8"
   },
   "devDependencies": {

@@ -1,36 +1,43 @@
 <template>
-  <el-container style="height: 100%">
-    <el-header>
-      <el-menu
-        :mode="'horizontal'"
-        :collapse="false"
-        :router="true"
-        menu-trigger="hover"
-        :default-active="this.$route.path"
-        background-color="rgba(0,0,0,0)"
-        text-color="#000"
-        active-text-color="rgb(92, 198, 255)">
-        <el-menu-item index="/">
-          <i class="el-icon-menu"></i>
-          <span slot="title"></span>
-        </el-menu-item>
-        <el-menu-item index="/tools/calculators">
-          <i class="el-icon-sort"></i>
-          <span slot="title"></span>
-        </el-menu-item>
-        <el-menu-item index="/about">
-          <i class="el-icon-info"></i>
-          <span slot="title"></span>
-        </el-menu-item>
-      </el-menu>
-    </el-header>
-    <el-main style="padding: 0px">
+  <div class="container" style="height: 100%">
+    <div class="header" style="width: 100%">
+      <van-tabs v-model="active" color="rgb(92, 198, 255)" swipeable sticky @change="change">
+        <van-tab title="Monitor"></van-tab>
+        <van-tab title="Calculator"></van-tab>
+        <van-tab title="About"></van-tab>
+      </van-tabs>
+    </div>
+    <div style="padding: 0px">
       <nuxt />
-    </el-main>
-  </el-container>
+    </div>
+  </div>
 </template>
 
-<style>
+<script>
+export default {
+  components: {
+  },
+  data () {
+    return {
+      active: 0
+    }
+  },
+  methods: {
+    change(ix, title) {
+      if (ix === 0) {
+        this.$router.push('/')
+      } else if (ix === 1) {
+        this.$router.push('/tools/calculators')
+      } else {
+        this.$router.push('/about')
+      }
+    }
+  }
+}
+</script>
+
+
+<style >
 html {
   font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
@@ -57,6 +64,7 @@ a {
   color: rgb(92, 198, 255);
   text-decoration: none;
 }
+
 
 .button--green {
   display: inline-block;
@@ -196,15 +204,21 @@ a {
 
 .top {
   margin: 20px 0;
+  text-align: center;
 }
 
 .container {
   margin: 0 auto;
   min-height: 100vh;
-  display: flex;
   align-items: center;
-  text-align: center;
-  flex-direction: column;
+}
+
+.van-cell.van-field {
+  padding: 0;
+}
+
+.panel {
+  width: 100%;
 }
 
 .page-title {
@@ -217,8 +231,24 @@ a {
 }
 
 .section-title {
-  margin: 40px 0 20px 0;
+  margin: 30px 0 16px 14px;
   opacity: 0.6;
+  text-align: left;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.nodelist-legends {
+  margin: 0px 0 16px 14px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0,0,0, 0.06);
+  padding-bottom: 10px;
+  font-size: 14px;
+}
+.nodelist-legends  .legend-label {
+  opacity: 0.6;
+  display: flex;
 }
 
 .pane-like {

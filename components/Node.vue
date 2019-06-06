@@ -3,10 +3,11 @@
     <div class="node-top">
       <div class="node-info">
         <div class="node-info-top">
+          <a v-if="StatData" class="version" :href="'//github.com/MixinNetwork/mixin/commit/' + StatData.version">{{StatData.version.slice(0, 6)}}</a>
           <div class="name">{{data.name}}</div>
-          <a v-if="StatData" class="version" :href="'//github.com/MixinNetwork/mixin/commit/' + StatData.version">{{StatData.version.slice(0, 8)}}</a>
+          <div class="value"></div>
         </div>
-        <div class="text">{{data.text}}</div>
+        <!-- <div class="text">{{data.text}}</div> -->
       </div>
       <div class="node-stat">
         <div class="stat-spot" :class="isActive ? 'active' : ''" v-tooltip="{ content: Tooltips }">
@@ -91,6 +92,12 @@
     <div class="techie" @click="toggle">
       <div class="addr">{{data.host}}</div>
     </div>
+
+    <div class="key-metrics">
+      <div class="key-metric topology">T:{{StatData ? StatData.graph.topology : '??'}}</div>
+      <div class="key-metric cached">C:{{CachedItems}}</div>
+    </div>
+
   </div>
 </template>
 
@@ -201,19 +208,42 @@ export default {
   box-shadow: 0 1px 0 0 rgba(0,0,0,0.3), 0 0px 3px 0 rgba(0,0,0,0.06);
   display: flex;
   flex-direction: column;
+  width: 84px;
+  height: 84px;
+  position: relative;
 }
 .node.active {
   box-shadow: 0 1px 0 0 rgb(92, 198, 255), 0 0px 3px 0 rgba(92, 198, 255, 0.2);
 }
 .node-info {
   flex: 1;
-  margin-right: 10px;
+}
+.key-metrics {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 10px;
+  color: rgba(0,0,0,0.3);
+  font-family: 'Roboto Mono', 'Menlo', Courier, monospace;
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+.key-metric:first-child {
+  padding-top: 1px;
+}
+.key-metric {
+  padding: 0px 0 1px 4px;
+  background: white;
+  box-shadow: 0 1px 0 0 rgb(92, 198, 255);
+}
+.key-metric.topology {
 }
 .node-stat {
   flex: 0;
   padding: 0 0px 0 20px;
   border-left: 1px solid rgba(0,0,0,0.1);
-  display: flex;
+  /* display: flex; */
+  display: none;
   justify-content: center;
   align-items: center;
 }
@@ -222,7 +252,8 @@ export default {
   /* box-shadow: inset 0 0 20px rgba(0,0,0,0.2); */
   height: 20px;
   width: 20px;
-  display: block;
+  /* display: block; */
+  display: none;
   /* border: 1px solid #979797; */
   box-shadow: 0 1px 3px 0 rgba(0,0,0,0.50);
   position: relative;
@@ -282,24 +313,31 @@ export default {
 }
 .node-top {
   display: flex;
-  padding: 10px 20px 10px 20px;
 }
 .node-info-top {
   display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 .name {
   flex: 1;
   color: rgb(59, 186, 222);
-  font-weight: bold;
   margin-bottom: 6px;
+  font-size: 12px;
+  padding: 4px;
 }
 .version {
-  font-size: 12px;
+  padding: 4px;
+  text-align: right;
+  background: #f8f8f8;
+  font-size: 10px;
+  display: block;
+  color: rgba(0,0,0,0.3);
   font-family: 'Roboto Mono', 'Operator Mono', 'SF Mono', 'Menlo', 'Courier', Courier, monospace
 }
 .techie, .techie-details {
+  display: none;
   background: rgba(196, 148, 148, 0.08);
-  display: flex;
   padding: 8px 20px;
   color: rgba(183, 184, 186, 1);
   font-size: 12px;
@@ -329,9 +367,6 @@ export default {
 }
 .addr, .topology {
   flex: 1;
-}
-.topology {
-  flex: 0;
 }
 .row {
   display: flex;

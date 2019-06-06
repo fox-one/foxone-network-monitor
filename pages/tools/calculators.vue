@@ -1,114 +1,62 @@
 <template>
   <section class="container">
-    <div class="top">
-      <h1 class="title page-title">Calculators</h1>
+    <div class="panel">
+      <van-cell-group title="XIN Mining Rewards Calculator" class="cell-group">
+        <van-cell title="Rewards Vol(XIN)">
+          <van-field v-model="miningRewardsForm.rewardVolume"></van-field>
+        </van-cell>
+        <van-cell title="Rewards %">
+          <van-field v-model="miningRewardsForm.yearlyPercent"></van-field>
+        </van-cell>
+        <van-cell title="Total Nodes">
+          <van-field v-model="miningRewardsForm.nodeCount"></van-field>
+        </van-cell>
+        <van-cell-group title="Result">
+          <van-cell v-for="item in miningRewardsResult" :title="item.key">{{item.value}}</van-cell>  
+        </van-cell-group>
+        <van-row style="padding: 10px;">
+          <van-button type="primary" style="width: 100%" @click="calMiningRewardForm">Calculate</van-button>        
+        </van-row>
+      </van-cell-group>
     </div>
 
-    <div class="section-title">~ XIN Mining Rewards ~</div>
-    <el-form label-width="100px" class="pane-like calculator">
-      <el-form-item label="Rewards Vol">
-        <el-input v-model="miningRewardsForm.rewardVolume">
-          <template slot="append">XIN</template>          
-        </el-input>
-      </el-form-item>
-      <el-form-item label="Rewards %">
-        <el-input v-model="miningRewardsForm.yearlyPercent">
-          <template slot="append">%</template>          
-        </el-input>
-      </el-form-item>
-      <el-form-item label="Node Count">
-        <el-input v-model="miningRewardsForm.nodeCount"></el-input>
-      </el-form-item>
-      <el-row style="margin: 10px 0 20px;">
-        <el-button type="primary" @click="calMiningRewardForm">Calculate</el-button>        
-      </el-row>
-      <el-table  class="results"
-        empty-text="No data."
-        :show-header="false"
-        :data="miningRewardsResult"
-        size="mini"
-        style="width: 100%">
-        <el-table-column
-          prop="key"
-          width="140">
-        </el-table-column>
-        <el-table-column
-          prop="value"
-        >
-        </el-table-column>
-      </el-table>       
-    </el-form>
+    <div class="panel">
+      <van-cell-group title="F1 Pre-Mining Rewards Calculator" class="cell-group">
+        <van-cell title="Daily Rewards">
+          <van-field v-model="preMiningRewardsForm.rewardPerDay"></van-field>
+        </van-cell>
+        <van-cell title="Rewards %">
+          <van-field v-model="preMiningRewardsForm.percent"></van-field>
+        </van-cell>
+        <van-cell title="Total shares(FMC1)">
+          <van-field v-model="preMiningRewardsForm.totalParticipates"></van-field>
+        </van-cell>
+        <van-cell title="Your shares(FMC1)">
+          <van-field v-model="preMiningRewardsForm.participates"></van-field>
+        </van-cell>
+        <van-cell-group title="Result">
+          <van-cell v-for="item in preMiningRewardsResult" :title="item.key">{{item.value}}</van-cell>  
+        </van-cell-group>
+        <van-row style="padding: 10px;">
+          <van-button type="primary" style="width: 100%" @click="calPreMiningRewardForm">Calculate</van-button>        
+        </van-row>
+      </van-cell-group>
+    </div>
 
-    <div class="section-title">~ Fox.ONE Pre-Mining Rewards ~</div>
-    <el-form label-width="120px" class="pane-like calculator">
-      <el-form-item label="Daily Rewards">
-        <el-input v-model="preMiningRewardsForm.rewardPerDay">
-          <template slot="append">XIN</template>          
-        </el-input>
-      </el-form-item>
-      <el-form-item label="Rewards %">
-        <el-input v-model="preMiningRewardsForm.percent">
-          <template slot="append">%</template>          
-        </el-input>
-      </el-form-item>
-      <el-form-item label="Total shares">
-        <el-input v-model="preMiningRewardsForm.totalParticipates">
-          <template slot="append">FMC1</template>          
-        </el-input>
-      </el-form-item>
-      <el-form-item label="Your shares">
-        <el-input v-model="preMiningRewardsForm.participates">
-          <template slot="append">FMC1</template>          
-        </el-input>
-      </el-form-item>
-      <el-row style="margin: 10px 0 20px;">
-        <el-button type="primary" @click="calPreMiningRewardForm">Calculate</el-button>        
-      </el-row>
-      <el-table class="results"
-        empty-text="No data."
-        :show-header="false"
-        :data="preMiningRewardsResult"
-        size="mini"
-        style="width: 100%">
-        <el-table-column
-          prop="key"
-          width="140">
-        </el-table-column>
-        <el-table-column
-          prop="value"
-        >
-        </el-table-column>
-      </el-table>       
-    </el-form>
-
-
-    <div class="section-title">~ Network Threaten Calculator ~</div>
-    <el-form label-width="120px" class="pane-like calculator">
-      <el-form-item label="Total Nodes">
-        <el-input v-model="threatenForm.totalNode">
-        </el-input>
-      </el-form-item>
-      <el-row style="margin: 10px 0 20px;">
-        <el-button type="primary" @click="calThreatenForm">Calculate</el-button>        
-      </el-row>
-
-      <el-table class="results"
-        empty-text="No data."
-        :show-header="false"
-        :data="threatenResult"
-        size="mini"
-        style="width: 100%">
-        <el-table-column
-          prop="key"
-          width="24">
-        </el-table-column>
-        <el-table-column
-          prop="value"
-        >
-        </el-table-column>
-      </el-table>       
-    </el-form>
-
+    <div class="panel">
+      <van-cell-group title="Network Threaten Calculator" class="cell-group">
+        <van-cell title="Total Nodes">
+          <van-field v-model="threatenForm.totalNode"></van-field>
+        </van-cell>
+        <van-cell-group title="Result">
+          <van-row style="font-size: 12px; padding: 4px 16px;" v-for="item in threatenResult" :title="item.key">{{item.key}}: {{item.value}}</van-row>  
+        </van-cell-group>
+        <van-row style="padding: 10px;">
+          <van-button type="primary" style="width: 100%" @click="calThreatenForm">Calculate</van-button>        
+        </van-row>
+      </van-cell-group>
+    </div>
+    
   </section>
 </template>
 
@@ -120,7 +68,7 @@ export default {
       miningRewardsForm: {
         rewardVolume: 450000,
         yearlyPercent: 10,
-        nodeCount: 15,
+        nodeCount: 24,
       },
       miningRewardsResult: [],
       preMiningRewardsForm: {
@@ -131,7 +79,7 @@ export default {
       },
       preMiningRewardsResult: [],
       threatenForm: {
-        totalNode: 15,
+        totalNode: 24,
       },
       threatenResult: [],
       xinPrice: 0,

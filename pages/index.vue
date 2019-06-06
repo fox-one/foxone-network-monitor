@@ -1,26 +1,32 @@
 <template>
-  <section class="container">
+  <section class="content">
     <div class="top">
       <h1 class="title page-title">Mixin Network Monitor</h1>
     </div>
-    <div class="nodelist-title section-title">~ Planning Nodes (4) ~</div>
+    <div class="nodelist-title section-title">Planning Nodes: 4</div>
     <div class="nodelist">
-      <div class="node-wrapper">
-        <div class="empty-node">
-          <template v-for="mgr in managers">
-          <a @click="viewMgr(mgr, $event)" class="node-mgr" :class="mgr.class" >
-            <span class="circle">
-              <span class="outer-circle"></span>
-              <span class="inner-circle"></span>
-            </span>
-            <img class="node-mgr-icon" :src="mgr.icon" />
-            <span class="node-mgr-name">{{mgr.name}}</span>
-          </a>
-          </template>
+      <template v-for="mgr in managers">
+        <div class="node-wrapper">
+          <div class="empty-node">
+            <a @click="viewMgr(mgr, $event)" class="node-mgr" :class="mgr.class" >
+              <span class="circle">
+                <span class="outer-circle"></span>
+                <span class="inner-circle"></span>
+              </span>
+              <img class="node-mgr-icon" :src="mgr.icon" />
+              <span class="node-mgr-name">{{mgr.name}}</span>
+            </a>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
-    <div class="nodelist-title section-title">{{'~ Online Nodes (' + onlineMixinNodes.length + ') ~'}}</div>
+    <div class="nodelist-title section-title">{{'Online Nodes: ' + onlineMixinNodes.length}}</div>
+    <!-- <div class="nodelist-legends">
+      <div class="legend legend-topology">
+        <div class="legend-label">topology</div>
+        <div></div>
+      </div>
+    </div> -->
     <div class="nodelist">
       <template v-if="onlineMixinNodes.length !== 0">
         <div class="node-wrapper" v-for="node in onlineMixinNodes">
@@ -33,7 +39,7 @@
         </div>
       </template>
     </div>
-    <div class="nodelist-title section-title">{{"~ Can't be reached (" + offlineMixinNodes.length + ") ~"}}</div>
+    <div class="nodelist-title section-title">{{"Can't be reached: " + offlineMixinNodes.length}}</div>
     <div class="nodelist">
       <template v-if="offlineMixinNodes.length !== 0">
         <div class="node-wrapper" v-for="node in offlineMixinNodes">
@@ -55,15 +61,16 @@
 </template>
 
 <script>
-
+import { Tabbar, TabbarItem } from 'vant'
 import Node from '~/components/node'
 
 export default {
   components: {
-    Node
+    Node,
   },
   async mounted () {
-    const result = await this.$axios.$get('https://node.f1ex.io/mixin-nodes-stat.json?id=' + (Date.now() + Math.random()))
+    // const result = await this.$axios.$get('https://node.f1ex.io/mixin-nodes-stat.json?id=' + (Date.now() + Math.random()))
+    const result = require('../static/mocking.json')
     this.nodes = result.nodes
     this.updatedAt = new Date(result.updatedAt).toLocaleString()
   },
@@ -125,15 +132,10 @@ export default {
   width: 100%;
   padding: 0 10px;
   max-width: 800px;
-  /* text-align: left; */
-  justify-content: center;
 }
-
 .node-wrapper {
   float: left;
-  margin: 4px;
-  /* width: 400px; */
-  width: 100%;
+  margin: 2px;
 }
 
 .empty-node {
@@ -144,8 +146,8 @@ export default {
   background: white;
   flex: 1;
   box-shadow: 0 1px 0 0 rgb(92, 198, 255), 0 0px 3px 0 rgba(92, 198, 255, 0.2);
-  margin-right: 10px;
   position: relative;
+  width: 84px;
 }
 .empty-node .node-mgr:last-child {
   margin-right: 0px;
@@ -167,6 +169,7 @@ export default {
   font-size: 14px;
   color: rgba(0,0,0,0.6);
   background: rgba(196, 148, 148, 0.08);
+  text-align: center;
 }
 .empty-node .node-mgr.flicker .circle {
   /* animation: rotatecircle 4s linear; */
@@ -209,14 +212,17 @@ export default {
   /* animation: spinoffPulse 1s infinite linear; */
 }
 .hint {
-  padding: 0 0 40px 0;
-  opacity: 0.6;
+  padding: 0 0 40px 4px;
+  opacity: 0.4;
   font-size: 14px;
+  text-align: center;
+  display: block;
 }
 
 .footer {
   margin: 40px 0 40px 0;
   font-size: 12px;
+  text-align: center;
 }
 .footer > .datetime {
   opacity: 0.6;
