@@ -234,25 +234,13 @@ export default {
   box-shadow: 0 1px 0 0 rgb(92, 198, 255);
 }
 .key-metric.level-0 {
-  color: rgb(136, 0, 7);
+  color: #00b435;
 }
 .key-metric.level-1 {
-  color: rgb(209, 0, 10);
+  color: rgb(255, 136, 0);
 }
 .key-metric.level-2 {
-  color: rgb(255, 72, 22);
-}
-.key-metric.level-3 {
-  color: rgb(255, 153, 0);
-}
-.key-metric.level-4 {
-  color: rgb(0, 223, 171);
-}
-.key-metric.level-5 {
-  color: rgb(108, 196, 0);
-}
-.key-metric.level-6 {
-  color: rgb(0, 89, 233);
+  color: rgb(136, 0, 7);
 }
 .node-stat {
   flex: 0;

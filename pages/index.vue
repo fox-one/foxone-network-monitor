@@ -90,7 +90,14 @@ export default {
 
     for (let ix = 0; ix < result.nodes.length; ix++) {
       let node = result.nodes[ix]
-      node.level = parseInt((node.stat.data.graph.topology - min) / (max - min) * 6)
+      let val = max - node.stat.data.graph.topology
+      if (val < 10) {
+        node.level = 0
+      } else if (val < 30) {
+        node.level = 1
+      } else {
+        node.level = 2
+      }
       nodes.push(node)
     }
     this.nodes = nodes
