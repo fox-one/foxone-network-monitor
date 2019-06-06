@@ -94,8 +94,8 @@
     </div>
 
     <div class="key-metrics">
-      <div class="key-metric topology">T:{{StatData ? StatData.graph.topology : '??'}}</div>
-      <div class="key-metric cached">C:{{CachedItems}}</div>
+      <div class="key-metric topology" :class="'level-' + data.level">T:{{StatData ? StatData.graph.topology : '??'}}</div>
+      <!-- <div class="key-metric cached">C:{{CachedItems}}</div> -->
     </div>
 
   </div>
@@ -228,15 +228,31 @@ export default {
   font-family: 'Roboto Mono', 'Menlo', Courier, monospace;
   border-top: 1px solid rgba(0,0,0,0.05);
 }
-.key-metric:first-child {
-  padding-top: 1px;
-}
 .key-metric {
-  padding: 0px 0 1px 4px;
+  padding: 2px 0 2px 4px;
   background: white;
   box-shadow: 0 1px 0 0 rgb(92, 198, 255);
 }
-.key-metric.topology {
+.key-metric.level-0 {
+  color: rgb(136, 0, 7);
+}
+.key-metric.level-1 {
+  color: rgb(209, 0, 10);
+}
+.key-metric.level-2 {
+  color: rgb(255, 72, 22);
+}
+.key-metric.level-3 {
+  color: rgb(255, 153, 0);
+}
+.key-metric.level-4 {
+  color: rgb(0, 223, 171);
+}
+.key-metric.level-5 {
+  color: rgb(108, 196, 0);
+}
+.key-metric.level-6 {
+  color: rgb(0, 89, 233);
 }
 .node-stat {
   flex: 0;

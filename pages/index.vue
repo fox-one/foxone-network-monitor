@@ -69,9 +69,31 @@ export default {
     Node,
   },
   async mounted () {
-    const result = await this.$axios.$get('https://node.f1ex.io/mixin-nodes-stat.json?id=' + (Date.now() + Math.random()))
-    // const result = require('../static/mocking.json')
-    this.nodes = result.nodes
+    // const result = await this.$axios.$get('https://node.f1ex.io/mixin-nodes-stat.json?id=' + (Date.now() + Math.random()))
+    const result = require('../static/mocking.json')
+    let nodes = []
+    let max = 0
+    let min = Number.MAX_SAFE_INTEGER
+
+    for (let ix = 0; ix < result.nodes.length; ix++) {
+      const node = result.nodes[ix]
+      let statData = node.stat.data
+      if (statData) {
+        if (statData.graph.topology < min) {
+          min = statData.graph.topology
+        }
+        if (statData.graph.topology > max) {
+          max = statData.graph.topology
+        }
+      }
+    }
+
+    for (let ix = 0; ix < result.nodes.length; ix++) {
+      let node = result.nodes[ix]
+      node.level = parseInt((node.stat.data.graph.topology - min) / (max - min) * 6)
+      nodes.push(node)
+    }
+    this.nodes = nodes
     this.updatedAt = new Date(result.updatedAt).toLocaleString()
   },
   data () {
